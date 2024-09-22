@@ -1,3 +1,5 @@
+# Visual Studio Code - do not want to have it in
+.vscode/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -129,6 +131,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+host_venv/
 
 # Spyder project settings
 .spyderproject
