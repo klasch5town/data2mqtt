@@ -46,3 +46,9 @@ host_url = <address of your mqtt broker>
 user     = <your mqtt username>
 password = <your top-secret mqtt password>
 ```
+
+Links
+-----
+- https://pypi.org/project/paho-mqtt/ - mqtt library used in this project
+- https://eclipse.dev/paho/files/paho.mqtt.python/html/client.html - documentation of paho-mqtt library
+- https://pypi.org/project/pi1wire/ - one-wire library used in this project
