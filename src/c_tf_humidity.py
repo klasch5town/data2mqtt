@@ -43,14 +43,14 @@ if __name__ == "__main__":
     ipcon.connect(HOST, PORT) # Connect to brickd
     # Don't use device before ipcon is connected
 
-    hdl_barometer = c_barometer(UID, "%", "Luftfeuchte")
-    hdl_barometer.setup(ipcon)
+    hdl_humidity = c_tf_humidity(UID, "%", "Luftfeuchte")
+    hdl_humidity.setup(ipcon)
     
     if False:
-        hdl_barometer.startCallback()
+        hdl_humidity.startCallback()
         input('Press key to exit\n') # Use input() in Python 3
     else:
-        humidity = hdl_barometer.getValue()
-        print(f"{hdl_barometer.Label}: {humidity} {hdl_barometer.Entity}")
+        humidity = hdl_humidity.getValue()
+        print(f"{hdl_humidity.Label}: {humidity} {hdl_humidity.Entity}")
     
     ipcon.disconnect()
