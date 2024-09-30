@@ -9,6 +9,7 @@
 # Copyright:   (c) shark 2014
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
+from simple_log import log
 
 class c_collector:
 	"""My collector-class - it will collect data from all sensors in the handle-list."""
@@ -62,8 +63,7 @@ if __name__ == '__main__':
 	from time import sleep
 	from c_1wireTemp import c_1wireTemp
 	from tinkerforge.ip_connection import IPConnection
-	from c_distanceUS import c_distanceUS
-	import logging as log
+	from c_tf_distanceUS import c_distanceUS
 
 	log.basicConfig(level=log.INFO)
 

@@ -1,6 +1,7 @@
 #!/bin/python
 #
 #
+from simple_log import log
 
 class c_emitter:
 	"""

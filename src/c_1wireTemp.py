@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #
 #
-import logging as log
+from simple_log import log
 from c_emitter import c_emitter
 from pi1wire import Pi1Wire, Resolution
 
@@ -19,15 +19,14 @@ class c_1wireTemp(c_emitter):
 				break
 		if self.sensor_handle is None:
 			log.error(f"{sensor_id} not found!")
-		return self.sensor_handle
 
-	def getValue(self):
+	def get_value(self):
 		Temperature = self.sensor_handle.get_temperature()
 		return format(Temperature,".1f")
 
 
 if __name__ == '__main__':
 	log.basicConfig(level=log.INFO)
-	hTemp = c_1wireTemp("10000802c5aeb7")
+	hTemp = c_1wireTemp("10000802c5aeb7","°C","Temperature")
 	Temperature = hTemp.getValue()
-	log.info(Temperature)
+	print(f"{hTemp.Label}:{Temperature}{hTemp.Entity}")

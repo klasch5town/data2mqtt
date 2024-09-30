@@ -4,7 +4,7 @@
 from c_emitter import c_emitter
 from tinkerforge.ip_connection import IPConnection
 from tinkerforge.bricklet_barometer import Barometer
-import logging as log
+from simple_log import log
 
 class c_tf_barometer(c_emitter):
     def __init__(self, device_id, entity="", label="", location=""):

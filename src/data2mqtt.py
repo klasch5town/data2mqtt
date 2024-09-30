@@ -1,13 +1,13 @@
 #!/usr/bin/python
 #
 
-from time import sleep
 import paho.mqtt.client as mqtt
 import configparser
-import paho.mqtt.client as mqtt
 import argparse
 import os
-import logging as log
+import logging
+from simple_log import log
+from time import sleep
 from c_1wireTemp import c_1wireTemp
 from c_collector import c_collector
 
@@ -47,12 +47,13 @@ def main(args):
     # read the sensor configuration
     config = configparser.ConfigParser()
     config.read(args.config)
-    collector_handle = c_collector()
+    hdl_collector = c_collector()
     for item in config.sections():
         if item.find('sensor') >= 0:
             sensor_handle = None
-            if config[item]['Type']=='11':
+            if config[item]['Type']=='1w_temp':
                 # add one-wire sensor
+                log.debug(f"found one-wire sensor: {config[item]['ID']}")
                 sensor_handle = c_1wireTemp(
                     config[item]['ID'], 
                     config[item]['Entity'], 
@@ -60,22 +61,20 @@ def main(args):
                     config[item]['Location'] 
                 )
             if sensor_handle is None:
+                log.debug("failed to add sensor")
                 continue
-            collector_handle.addSource(sensor_handle)
+            hdl_collector.addSource(sensor_handle)
             log.info(sensor_handle.info_string())
 
     mqttc.loop_start()
 
-    while True:
-        for device in p1w_sensor_list:
-            value = device.get_temperature()
-            if device.mac_address in sensor_dict.keys():
-                device_info=sensor_dict[device.mac_address]
-            else:
-                device_info={'name':device.mac_address,'location':'default'}
-            log.info(f"{device_info['name']}[{device.mac_address}] = {value:.3f}")
-            mqttc.publish(f"{device_info['location']}/sensor/temperature/{device_info['name']}", value)
-        sleep(5)
+    print(hdl_collector.HandleList)
+    print('-----')
+    for item in hdl_collector.HandleList.keys():
+        print(hdl_collector.HandleList[item].get_value())
+
+    #print(hdl_collector.ValueList)
+
 
 
 if __name__ == "__main__":
@@ -84,9 +83,13 @@ if __name__ == "__main__":
                         help='configuration file')
     parser.add_argument('-v','--verbose', action='store_true',
                         help='show more output')
+    parser.add_argument('-d','--debug', action='store_true',
+                        help='show debug output')
 
     args = parser.parse_args()
     if args.verbose:
-        log.basicConfig(level=log.INFO)
+        logging.basicConfig(level=logging.INFO)
+    if args.debug:
+        logging.basicConfig(level=logging.DEBUG)
 
     main(args)
